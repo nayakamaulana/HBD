@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy 21st Nuclear Birthday! ⚛️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0f0f23, #1a1a3e, #2d2d5f);
+            color: #00ff00;
+            overflow-y: auto;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .slide {
+            display: none;
+            width: 90%;
+            max-width: 800px;
+            text-align: center;
+            animation: fadeIn 0.8s ease-in;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff00;
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.3);
+            margin: 20px auto;
+            max-height: none;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .atom {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #00ff00;
+            border-radius: 50%;
+            animation: orbit 3s infinite linear;
+        }
+
+        @keyframes orbit {
+            from { transform: rotate(0deg) translateX(100px) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
+        }
+
+        .radiation {
+            position: absolute;
+            font-size: 2rem;
+            color: #ffff00;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px #00ff00;
+            animation: glow 2s infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px #00ff00; }
+            to { text-shadow: 0 0 30px #00ff00, 0 0 40px #00ff00; }
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #ffff00;
+            margin-bottom: 30px;
+        }
+
+        .question {
+            font-size: 1.3rem;
+            margin: 20px 0;
+            padding: 20px;
+            background: rgba(0, 255, 0, 0.1);
+            border-left: 4px solid #00ff00;
+            text-align: left;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .option {
+            padding: 15px;
+            background: rgba(255, 255, 0, 0.1);
+            border: 2px solid #ffff00;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .option:hover {
+            background: rgba(255, 255, 0, 0.3);
+            transform: scale(1.05);
+        }
+
+        .option.correct {
+            background: rgba(0, 255, 0, 0.3);
+            border-color: #00ff00;
+        }
+
+        .option.wrong {
+            background: rgba(255, 0, 0, 0.3);
+            border-color: #ff0000;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #00ff00, #ffff00);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 20px 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 255, 0, 0.5);
+        }
+
+        .progress {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff00, #ffff00);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .score {
+            font-size: 1.5rem;
+            margin: 20px 0;
+            color: #ffff00;
+        }
+
+        .nuclear-symbol {
+            font-size: 5rem;
+            color: #ffff00;
+            animation: rotate 10s infinite linear;
+            margin: 20px 0;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .birthday-msg {
+            font-size: 1.5rem;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        .celebration {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+        }
+
+        @keyframes confetti {
+            0% { transform: translateY(-150vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+
+        .explosion {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, #ffff00, #ff6600, #ff0000, #000000);
+            border-radius: 50%;
+            animation: explode 3s ease-out forwards;
+            z-index: 9999;
+        }
+
+        @keyframes explode {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 1;
+                box-shadow: 0 0 0 rgba(255, 255, 0, 0.8);
+            }
+            50% {
+                width: 200vw;
+                height: 200vh;
+                opacity: 0.9;
+                box-shadow: 0 0 100px rgba(255, 255, 0, 1);
+            }
+            100% {
+                width: 300vw;
+                height: 300vh;
+                opacity: 0;
+                box-shadow: 0 0 200px rgba(255, 255, 0, 0);
+            }
+        }
+
+        .flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(45deg, #ffffff, #ffff00, #ffffff);
+            opacity: 0;
+            animation: flash 2s ease-in-out;
+            z-index: 10000;
+            pointer-events: none;
+        }
+
+        @keyframes flash {
+            0% { opacity: 0; }
+            10% { opacity: 1; }
+            30% { opacity: 0.8; }
+            50% { opacity: 1; }
+            70% { opacity: 0.6; }
+            90% { opacity: 0.9; }
+            100% { opacity: 0; }
+        }
+
+        .shockwave {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 10px;
+            border: 3px solid #00ff00;
+            border-radius: 50%;
+            animation: shockwave 4s ease-out forwards;
+            z-index: 9998;
+        }
+
+        @keyframes shockwave {
+            0% {
+                width: 10px;
+                height: 10px;
+                opacity: 1;
+                border-width: 5px;
+            }
+            100% {
+                width: 300vw;
+                height: 300vw;
+                opacity: 0;
+                border-width: 1px;
+            }
+        }
+
+        .warning-flash {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4rem;
+            font-weight: bold;
+            color: #ff0000;
+            text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
+            z-index: 10001;
+            animation: warningFlash 1s ease-in-out infinite;
+            display: none;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            border: 3px solid #ff0000;
+        }
+
+        .explosion-warning {
+            position: fixed;
+            top: 30%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ffff00;
+            text-shadow: 0 0 15px #ffff00, 0 0 30px #ffff00;
+            z-index: 10002;
+            animation: explosionWarning 0.5s ease-in-out infinite;
+            display: none;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+            border: 3px solid #ffff00;
+        }
+        
+        @keyframes warningFlash {
+            0%, 100% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+                color: #ff0000;
+            }
+            25% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2);
+                color: #ffff00;
+            }
+            50% {
+                opacity: 0.8;
+                transform: translate(-50%, -50%) scale(1);
+                color: #ff0000;
+            }
+            75% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.1);
+                color: #ffff00;
+            }
+        }
+
+        .final-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 5rem;
+            font-weight: bold;
+            color: #00ff00;
+            text-shadow: 0 0 30px #00ff00, 0 0 60px #00ff00;
+            z-index: 10003;
+            animation: finalMessage 2s ease-in-out infinite;
+            display: none;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 20px;
+            border: 4px solid #00ff00;
+        }
+
+        @keyframes finalMessage {
+            0%, 100% {
+                opacity: 0.8;
+                transform: translate(-50%, -50%) scale(0.9);
+                color: #00ff00;
+                text-shadow: 0 0 30px #00ff00;
+            }
+            25% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.1);
+                color: #ffff00;
+                text-shadow: 0 0 40px #ffff00, 0 0 80px #ffff00;
+            }
+            50% {
+                opacity: 0.9;
+                transform: translate(-50%, -50%) scale(1);
+                color: #00ff00;
+                text-shadow: 0 0 35px #00ff00;
+            }
+            75% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.05);
+                color: #ffff00;
+                text-shadow: 0 0 50px #ffff00, 0 0 100px #ffff00;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="atom" style="top: 10%; left: 10%; animation-delay: 0s;"></div>
+        <div class="atom" style="top: 20%; right: 15%; animation-delay: 1s;"></div>
+        <div class="atom" style="bottom: 30%; left: 20%; animation-delay: 2s;"></div>
+        <div class="atom" style="bottom: 10%; right: 25%; animation-delay: 0.5s;"></div>
+        
+        <div class="radiation" style="top: 15%; right: 10%;">☢️</div>
+        <div class="radiation" style="bottom: 20%; left: 15%;">⚛️</div>
+
+        <div class="slide active">
+            <div class="nuclear-symbol">⚛️</div>
+            <h1>NUCLEAR ADVENTURE</h1>
+            <h2>Petualangan Nuklir untuk Bika!</h2>
+            <div class="birthday-msg">
+                Selamat datang di petualangan nuklir yang Seru abiezz <br>
+                Siap-siap yaa biar reaktormu enggak meledakk ommoo!
+            </div>
+            <button class="btn" onclick="nextSlide()">Gass mulai!</button>
+        </div>
+
+        <div class="slide">
+            <div class="progress">
+                <div class="progress-bar" style="width: 25%;"></div>
+            </div>
+            <h2>Kuis Nuklir #1 - Waktu Paruh</h2>
+            <div class="question">
+                Isotop radioaktif X memiliki waktu paruh 12 hari. Jika dimulai dari 92 gram, berapa gram yang tersisa setelah 24 hari? (Hint: 24 hari = 2 × waktu paruh)
+            </div>
+            <div class="options">
+                <div class="option" onclick="selectAnswer(this, true)">A) 23 gram</div>
+                <div class="option" onclick="selectAnswer(this, false)">B) 46 gram</div>
+                <div class="option" onclick="selectAnswer(this, false)">C) 11.5 gram</div>
+                <div class="option" onclick="selectAnswer(this, false)">D) 30.7 gram</div>
+            </div>
+            <div id="explanation1" style="display: none; color: #ffff00; margin-top: 20px;">
+                💡 Penjelasan: Setiap waktu paruh, massa berkurang setengah!<br>
+                92 gram → 46 gram → 23 gram (setelah 2 × waktu paruh)
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="progress">
+                <div class="progress-bar" style="width: 50%;"></div>
+            </div>
+            <h2>Kuis Nuklir #2 - Nomor Atom</h2>
+            <div class="question">
+                Fluorine (F) memiliki nomor atom 9. Dalam reaktor nuklir, jika kita punya 9 atom Fluorine dan setiap atom kehilangan 0 neutron, berapa total nomor atom yang kita miliki?
+            </div>
+            <div class="options">
+                <div class="option" onclick="selectAnswer(this, false)">A) 18</div>
+                <div class="option" onclick="selectAnswer(this, true)">B) 09</div>
+                <div class="option" onclick="selectAnswer(this, false)">C) 45</div>
+                <div class="option" onclick="selectAnswer(this, false)">D) 81</div>
+            </div>
+            <div id="explanation2" style="display: none; color: #ffff00; margin-top: 20px;">
+                💡 Penjelasan: Nomor atom tidak berubah meski neutron hilang!<br>
+                Fluorine tetap punya nomor atom 09, walaupun ada 9 atom F!
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="progress">
+                <div class="progress-bar" style="width: 75%;"></div>
+            </div>
+            <h2>Kuis Nuklir #3 - Reaksi Fisi</h2>
+            <div class="question">
+                Dalam reaksi fisi Uranium-235, jika sebuah neutron menabrak inti dan menghasilkan 2 produk fisi + neutron baru, berapa neutron yang dihasilkan jika total partikel output adalah 24? (Input: 1 neutron + 1 inti = 2 partikel)
+            </div>
+            <div class="options">
+                <div class="option" onclick="selectAnswer(this, false)">A) 3</div>
+                <div class="option" onclick="selectAnswer(this, false)">B) 22</div>
+                <div class="option" onclick="selectAnswer(this, true)">C) 21</div>
+                <div class="option" onclick="selectAnswer(this, false)">D) 2</div>
+            </div>
+            <div id="explanation3" style="display: none; color: #ffff00; margin-top: 20px;">
+                💡 Penjelasan: Output = 2 produk fisi + neutron baru = 24 partikel total<br>
+                Jadi neutron baru = 24 - 2 = 22... eh wait, tapi jawabannya 21! 😅
+            </div>
+        </div>
+
+        <div class="slide">
+            <div class="progress">
+                <div class="progress-bar" style="width: 100%;"></div>
+            </div>
+            <div class="nuclear-symbol">⚛️</div>
+            <h1>SELAMAT YAA BIKK! 🎂</h1>
+            <div class="score" id="finalScore">Skor Anda: 0/3</div>
+            <div class="birthday-msg">
+                🎉 <strong>SELAMAT TAMBAH TUAA BIKAA!</strong> 🎂<br>
+                Semoga semua harapanmu tercapai yaaa... <br>
+                Doa terbaikku selalu untukmu ! <br><br>
+                
+                Di usia yang istimewa ini, semoga kamu menjadi orang yang bermanfaat bagi orang sekitarmu yaa.<br>
+                kayak reaksi fusi nuklir, dimana energi dan semangatmu terus memancar, Jangan lupa makan nasi padang 2 bungkus yaaaa! ✨<br><br>
+                
+                <strong>Fun Facts Nuclear:</strong><br>
+                🎂 Angka spesial: 23, 09, dan 21<br>
+                ⏰ Usia sekarang: 663.678.000 detik!<br>
+                ⚛️ Dalam satu mol karbon ada 6.022 × 10²³ atom!<br>
+                💫 Dan kamu satu-satunya Bika di dunia ini!
+            </div>
+            <button class="btn" onclick="restart()">Ulangi Kuis! </button>
+            <button class="btn" onclick="nextSlide()">Hadiah istimewa! </button>
+        </div>
+
+        <div class="slide">
+            <div class="nuclear-symbol">⚛️</div>
+            <h1>HADIAH SPESIAL UNTUK BIKA!</h1>
+            <h2>Nuclear Reactor Challenge! </h2>
+            
+            <div style="margin: 30px 0;">
+                <svg width="200" height="200" viewBox="0 0 200 200" style="cursor: pointer; transition: transform 0.3s ease;" onclick="nuclearExplosion()" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                    <circle cx="100" cy="100" r="60" fill="#2d2d5f" stroke="#00ff00" stroke-width="3"/>
+                    <circle cx="100" cy="100" r="45" fill="#1a1a3e" stroke="#ffff00" stroke-width="2"/>
+                    <circle cx="100" cy="100" r="30" fill="#ff6600" stroke="#ff0000" stroke-width="2"/>
+                    
+                    <rect x="85" y="40" width="6" height="40" fill="#888888" rx="3"/>
+                    <rect x="95" y="40" width="6" height="40" fill="#888888" rx="3"/>
+                    <rect x="105" y="40" width="6" height="40" fill="#888888" rx="3"/>
+                    <rect x="115" y="40" width="6" height="40" fill="#888888" rx="3"/>
+                    
+                    <rect x="40" y="95" width="40" height="10" fill="#0088ff" rx="5"/>
+                    <rect x="120" y="95" width="40" height="10" fill="#0088ff" rx="5"/>
+                    <rect x="95" y="120" width="10" height="40" fill="#0088ff" rx="5"/>
+                    
+                    <g fill="#ffff00" font-size="16" text-anchor="middle">
+                        <text x="70" y="70">☢</text>
+                        <text x="130" y="70">☢</text>
+                        <text x="70" y="130">☢</text>
+                        <text x="130" y="130">☢</text>
+                    </g>
+                    
+                    <text x="100" y="105" fill="#ff0000" font-size="12" text-anchor="middle" font-weight="bold">REACTOR</text>
+                    
+                    <circle cx="100" cy="100" r="20" fill="none" stroke="#00ff00" stroke-width="2" opacity="0.6">
+                        <animate attributeName="r" values="20;25;20" dur="2s" repeatCount="indefinite"/>
+                        <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                </svg>
+                <br>
+                <div style="color: #ff0000; font-size: 1.2rem; margin-top: 10px; animation: pulse 1s infinite;">
+                    ⚠️ KLIK REAKTOR UNTUK KEJUTAN! ⚠️
+                </div>
+            </div>
+            
+            <div class="birthday-msg">
+                Ini hadiah spesial dari teknik nuklir ya bikk! <br>
+                JANGAN KAGET NANTI MELEDAKK!!!! 😏
+            </div>
+            <button class="btn" onclick="previousSlide()">Kembali </button>
+        </div>
+    </div>
+    
+    <div class="warning-flash" id="warningFlash">⚠️ WARNING ⚠️</div>
+    <div class="explosion-warning" id="explosionWarning">💥 MELTDOWN IMMINENT 💥</div>
+    <div class="final-message" id="finalMessage">🎉 HAPPY 21'S! 🎂</div>
+
+    <script>
+        let currentSlide = 0;
+        let score = 0;
+        let answered = false;
+        const slides = document.querySelectorAll('.slide');
+        
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                slides[currentSlide].classList.remove('active');
+                currentSlide++;
+                slides[currentSlide].classList.add('active');
+                answered = false;
+                
+                if (currentSlide === slides.length - 2) {
+                    updateFinalScore();
+                }
+            }
+        }
+        
+        function selectAnswer(element, isCorrect) {
+            if (answered) return;
+            
+            answered = true;
+            const options = element.parentNode.querySelectorAll('.option');
+            
+            if (isCorrect) {
+                element.classList.add('correct');
+                score++;
+            } else {
+                element.classList.add('wrong');
+                options.forEach(opt => {
+                    if (opt.onclick.toString().includes('true')) {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+            
+            const explanationId = 'explanation' + (currentSlide);
+            const explanation = document.getElementById(explanationId);
+            if (explanation) {
+                explanation.style.display = 'block';
+            }
+            
+            setTimeout(() => {
+                if (currentSlide < slides.length - 2) {
+                    nextSlide();
+                } else if (currentSlide === slides.length - 3) {
+                    nextSlide();
+                    updateFinalScore();
+                }
+            }, 3000);
+        }
+        
+        function updateFinalScore() {
+            document.getElementById('finalScore').textContent = `Skor Anda: ${score}/3`;
+            if (score === 3) {
+                document.getElementById('finalScore').innerHTML += '<br>🏆 PERFECT! Kamu sudah siap jadi insinyur nuklir!';
+            } else if (score === 2) {
+                document.getElementById('finalScore').innerHTML += '<br>🥈 Bagus! Terus belajar ya!';
+            } else if (score === 1) {
+                document.getElementById('finalScore').innerHTML += '<br>🥉 Lumayan! Masih ada ruang untuk berkembang!';
+            } else {
+                document.getElementById('finalScore').innerHTML += '<br>💪 Semangat! Practice makes perfect!';
+            }
+        }
+        
+        function restart() {
+            currentSlide = 0;
+            score = 0;
+            answered = false;
+            
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[0].classList.add('active');
+            
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('correct', 'wrong');
+            });
+            
+            document.querySelectorAll('[id^="explanation"]').forEach(exp => {
+                exp.style.display = 'none';
+            });
+        }
+        
+        function celebrate() {
+            for (let i = 0; i < 50; i++) {
+                createConfetti();
+            }
+        }
+
+        function nuclearExplosion() {
+            const warningFlash = document.getElementById('warningFlash');
+            if (warningFlash) {
+                warningFlash.style.display = 'block';
+            }
+
+            setTimeout(() => {
+                const explosionWarning = document.getElementById('explosionWarning');
+                if (explosionWarning) {
+                    explosionWarning.style.display = 'block';
+                }
+                
+                setTimeout(() => {
+                    if (warningFlash) warningFlash.style.display = 'none';
+                    if (explosionWarning) explosionWarning.style.display = 'none';
+                    
+                    const explosion = document.createElement('div');
+                    explosion.className = 'explosion';
+                    document.body.appendChild(explosion);
+
+                    const flash = document.createElement('div');
+                    flash.className = 'flash';
+                    document.body.appendChild(flash);
+
+                    for (let i = 0; i < 3; i++) {
+                        setTimeout(() => {
+                            const shockwave = document.createElement('div');
+                            shockwave.className = 'shockwave';
+                            document.body.appendChild(shockwave);
+                            
+                            setTimeout(() => {
+                                if (shockwave && shockwave.parentNode) {
+                                    shockwave.remove();
+                                }
+                            }, 4000);
+                        }, i * 500);
+                    }
+
+                    if (document.body) {
+                        document.body.style.animation = 'shake 3s ease-in-out';
+                    }
+                    
+                    setTimeout(() => {
+                        for (let i = 0; i < 200; i++) {
+                            createConfetti();
+                        }
+                        
+                        const finalMessage = document.getElementById('finalMessage');
+                        if (finalMessage) {
+                            finalMessage.style.display = 'block';
+                        }
+                        
+                        setTimeout(() => {
+                            if (finalMessage) {
+                                finalMessage.style.display = 'none';
+                            }
+                        }, 8000);
+                    }, 1000);
+
+                    setTimeout(() => {
+                        if (explosion && explosion.parentNode) {
+                            explosion.remove();
+                        }
+                        if (flash && flash.parentNode) {
+                            flash.remove();
+                        }
+                        if (document.body) {
+                            document.body.style.animation = '';
+                        }
+                    }, 5000);
+                }, 1500);
+            }, 2000);
+        }
+        
+        function previousSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide--;
+            if (currentSlide >= 0) {
+                slides[currentSlide].classList.add('active');
+            } else {
+                currentSlide = 0;
+                slides[currentSlide].classList.add('active');
+            }
+        }
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.className = 'celebration';
+            confetti.innerHTML = ['🎉', '🎊', '⚛️', '🎂', '✨', '🎈', '🌟', '💥'][Math.floor(Math.random() * 8)];
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.fontSize = Math.random() * 30 + 25 + 'px';
+            confetti.style.animation = 'confetti ' + (Math.random() * 3 + 3) + 's linear';
+            
+            if (document.body) {
+                document.body.appendChild(confetti);
+            }
+            
+            setTimeout(() => {
+                if (confetti && confetti.parentNode) {
+                    confetti.remove();
+                }
+            }, 6000);
+        }
+        
+        // Background animation untuk efek tambahan
+        setInterval(() => {
+            const symbols = ['☢️', '⚛️', '💥'];
+            const symbol = document.createElement('div');
+            symbol.className = 'celebration';
+            symbol.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+            symbol.style.left = Math.random() * 100 + 'vw';
+            symbol.style.top = Math.random() * 100 + 'vh';
+            symbol.style.fontSize = '30px';
+            symbol.style.animation = 'pulse 2s ease-out';
+            
+            if (document.body) {
+                document.body.appendChild(symbol);
+            }
+            
+            setTimeout(() => {
+                if (symbol && symbol.parentNode) {
+                    symbol.remove();
+                }
+            }, 2000);
+        }, 5000);
+    </script>
+</body>
+</html>
+            
